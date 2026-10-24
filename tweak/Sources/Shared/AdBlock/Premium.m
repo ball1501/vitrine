@@ -24,7 +24,8 @@ static NSDictionary<NSString *, id> *forcedAttributes(void) {
         @"allow-advertising-id-transmission": @NO,
         @"restrict-advertising-id-transmission": @YES,
         @"can_use_superbird": @YES,
-        @"enable-crossfade-product-state": @"1",
+        // TEST: crossfade off the product state, so the core takes it from the settings the mod writes.
+        @"enable-crossfade-product-state": @"0",
         @"enable-gapless-product-state": @"1",
         @"catalogue": @"premium",
         @"financial-product": @"pr:premium,tc:0",
