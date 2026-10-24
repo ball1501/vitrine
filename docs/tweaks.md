@@ -236,6 +236,9 @@ Shared:
     Navigation/   the page transition fix (PageTransition.x), opening a spotify: link (Links.x), and either look's
                   Add a Tab sheet (AddTabSheet.m) with the icons a tab can wear, Encore's glyphs or SF Symbols
                   (TabIcons.m). The sheet runs in the simulator in harness/addtab/
+    OpenLinks/    links the app is opened with: the "Open in Spotify" Safari extensions of the EeveeSpotify
+                  family send the open.spotify.com tab to spotify://eevee/open.spotify.com/…, which Spotify
+                  refuses with "Couldn't Open Link" (OpenSpotify.x rewrites the https URL they mean in its place)
     Player/       the player's open and close announced (PlayerEvents.x), what the player is doing read through
                   one hook for every feature that wants it (PlayerState.x), the last track played for the settings
                   pages' previews to show when nothing plays (SGLastTrack.m), the lock screen widget's flags, and in the
