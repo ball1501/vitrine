@@ -1,8 +1,9 @@
 # Every push to main updates one release PR (version.txt and CHANGELOG.md from the feat:/fix:
 # commits since the last release). Merging it tags vX.Y.Z and makes the GitHub Release. The second job
 # builds the tweak on every push, with the Xcode build-ipa.yml uses, so a change that compiles only with a
-# newer SDK than that is caught before a release is cut from it. Nothing is attached: a .deb injected by hand
-# misses the app changes the redesign needs, so people build the full IPA (README). No IPA is built here.
+# newer SDK than that is caught before a release is cut from it. The .deb the build makes is kept as an
+# artifact and, when a release is cut, attached to it. It is a jailbreak package for the app as it ships:
+# the Info.plist overrides the IPA build merges in (the redesign's) are not part of it. No IPA is built here.
 name: Release
 
 on:
@@ -54,3 +55,26 @@ jobs:
 
       - name: Build
         run: env -u MAKELEVEL gmake -C tweak clean package
+
+      - name: Keep the .deb
+        uses: actions/upload-artifact@v4
+        with:
+          name: com.vitrine.tweak
+          path: tweak/packages/*.deb
+          if-no-files-found: error
+
+  attach-deb:
+    needs: [release-please, build]
+    if: needs.release-please.outputs.created == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: com.vitrine.tweak
+          path: deb
+      - name: Attach the .deb to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ needs.release-please.outputs.tag }}" deb/*.deb --clobber
