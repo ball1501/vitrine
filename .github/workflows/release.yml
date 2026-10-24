@@ -9,6 +9,8 @@ name: Release
 on:
   push:
     branches: [main]
+  # A rebuild of the same commits: after the flag-table secret changed, say. Artifacts keep for a run.
+  workflow_dispatch:
 
 permissions:
   contents: write
